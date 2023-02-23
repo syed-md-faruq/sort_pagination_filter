@@ -15,8 +15,9 @@ exports.people_get_custom =  (async (req, res) => {
      const total = await user.countDocuments(where);
      const pages = Math.ceil(total / pagesize);
      const order = req.body.order
-     let data = await user.find(where).skip(skip).limit(pagesize).sort({filter_by:order});;
- 
+     const sort_d = {}
+     sort_d[filter_by]=order
+     let data = await user.find(where).sort(sort_d).skip(skip).limit(pagesize);
      if (page > pages) {
          return res.status(404).json({
              status: "fail",
